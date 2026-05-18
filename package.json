@@ -1,0 +1,35 @@
+{
+  "name": "barrierfree-localroute-busan",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Barrierfree LocalRoute Busan - Busan public-data-based explainable AI route recommendation for transportation-vulnerable users.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/route_scoring.test.ts tests/congestion.test.ts tests/llm_guardrails.test.ts",
+    "check-forbidden": "node --experimental-strip-types scripts/check_forbidden_terms.ts .",
+    "verify": "npm run typecheck && npm run test && npm run check-forbidden"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.3",
+    "next": "14.2.18",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.19",
+    "postcss": "8.4.39",
+    "tailwindcss": "3.4.6",
+    "tsx": "^4.16.2",
+    "typescript": "5.5.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
