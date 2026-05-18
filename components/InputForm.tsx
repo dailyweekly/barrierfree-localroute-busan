@@ -11,11 +11,11 @@ const USER_TYPES: { value: string; label: string; icon: string; desc: string }[]
   { value: "general",     label: "일반",       icon: "🚶", desc: "일반 이용자" },
 ];
 
-const PREFS: { value: string; label: string; icon: string }[] = [
-  { value: "safety",         label: "안전 우선",   icon: "🛡️" },
-  { value: "low_congestion", label: "혼잡 회피",   icon: "🌊" },
-  { value: "min_transfer",   label: "환승 최소",   icon: "🔁" },
-  { value: "include_local",  label: "로컬 포함",   icon: "🍜" },
+const PREFS: { value: string; label: string; icon: string; hint: string }[] = [
+  { value: "safety",         label: "안전 우선",      icon: "🛡️", hint: "엘리베이터 이용불가 상황에도 갈 수 있는 길" },
+  { value: "low_congestion", label: "혼잡 회피",      icon: "🌊", hint: "이 시간대에 덜 붐비는 길" },
+  { value: "min_transfer",   label: "환승 최소",      icon: "🔁", hint: "갈아타는 횟수가 적은 길" },
+  { value: "include_local",  label: "관광·맛집 코스", icon: "🍜", hint: "유니크베뉴·갈맷길·택슐랭 식당을 함께 끼워 추천" },
 ];
 
 const DOW = ["일", "월", "화", "수", "목", "금", "토"];
@@ -59,7 +59,7 @@ export default function InputForm() {
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <h2 id="input-h" className="text-xl sm:text-2xl font-extrabold text-brand-700">① 사용자 조건 입력</h2>
-          <p className="text-sm text-slate-600 mt-1">출발·도착·시간대·사용자 유형·선호조건을 입력하면 안전 / 혼잡 회피 / 로컬 포함 3개 경로를 비교합니다.</p>
+          <p className="text-sm text-slate-600 mt-1">출발·도착·시간대·사용자 유형·선호조건을 입력하면 안전 / 혼잡 회피 / 관광·맛집 3가지 경로를 비교합니다.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {PRESETS.map((p) => (
@@ -130,14 +130,19 @@ export default function InputForm() {
 
       <fieldset className="mt-5">
         <legend className="font-semibold mb-2">⚙️ 선호 조건 (복수 선택)</legend>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
           {PREFS.map((p) => {
             const on = prefs.includes(p.value);
             return (
               <button key={p.value} type="button" aria-pressed={on}
                 onClick={() => togglePref(p.value)}
-                className={`px-3 py-2.5 rounded-xl text-sm font-medium border transition ${on ? "bg-brand-700 text-white border-brand-700" : "bg-white border-slate-300 hover:border-brand-300"}`}>
-                <span aria-hidden className="mr-1">{p.icon}</span>{p.label}
+                title={p.hint}
+                className={`text-left p-3 rounded-xl text-sm font-medium border transition ${on ? "bg-brand-700 text-white border-brand-700" : "bg-white border-slate-300 hover:border-brand-300"}`}>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-lg">{p.icon}</span>
+                  <span className="font-bold">{p.label}</span>
+                </div>
+                <div className={`text-[11px] mt-1 leading-snug ${on ? "text-white/80" : "text-slate-500"}`}>{p.hint}</div>
               </button>
             );
           })}

@@ -1,9 +1,9 @@
 import type { RouteCandidate, LLMExplanation } from "../lib/types";
 
 const KIND_THEME: Record<string, { bg: string; ring: string; icon: string; label: string; accent: string }> = {
-  safe:           { bg: "bg-card-safe",  ring: "ring-moss/30",  icon: "🛡️", label: "안전 우선",   accent: "text-moss-deep" },
-  low_congestion: { bg: "bg-card-cong",  ring: "ring-ocean/30", icon: "🌊", label: "혼잡 회피",   accent: "text-ocean-deep" },
-  include_local:  { bg: "bg-card-local", ring: "ring-coral/30", icon: "🍜", label: "로컬 포함",   accent: "text-coral-deep" },
+  safe:           { bg: "bg-card-safe",  ring: "ring-moss/30",  icon: "🛡️", label: "안전 우선",       accent: "text-moss-deep" },
+  low_congestion: { bg: "bg-card-cong",  ring: "ring-ocean/30", icon: "🌊", label: "혼잡 회피",       accent: "text-ocean-deep" },
+  include_local:  { bg: "bg-card-local", ring: "ring-coral/30", icon: "🍜", label: "관광·맛집 코스",  accent: "text-coral-deep" },
 };
 
 const GRADE_CHIP: Record<string, string> = {
@@ -53,7 +53,7 @@ export function RouteCard({ candidate, explanation }: { candidate: RouteCandidat
         <div>
           <dt className="text-[11px] text-slate-500">대체경로</dt>
           <dd className="font-bold text-brand-700 text-sm">{candidate.alternativeType || "확인 필요"}</dd>
-          <p className="text-[10px] text-slate-500 mt-1">15151579 학습라벨 기반</p>
+          <p className="text-[10px] text-slate-500 mt-1">부산교통공사 학습라벨 기반</p>
         </div>
       </dl>
 

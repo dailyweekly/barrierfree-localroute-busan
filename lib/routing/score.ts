@@ -160,7 +160,7 @@ export function buildCandidate(
   const titles: Record<RouteKind, string> = {
     safe: "안전 우선 경로",
     low_congestion: "혼잡 회피 경로",
-    include_local: "로컬 포함 경로",
+    include_local: "관광·맛집 코스",
   };
 
   return {
@@ -182,7 +182,7 @@ export function buildCandidate(
 function makeEmptyCandidate(kind: RouteKind, s: string, e: string): RouteCandidate {
   return {
     kind,
-    title: kind === "safe" ? "안전 우선 경로" : kind === "low_congestion" ? "혼잡 회피 경로" : "로컬 포함 경로",
+    title: kind === "safe" ? "안전 우선 경로" : kind === "low_congestion" ? "혼잡 회피 경로" : "관광·맛집 코스",
     startStation: s,
     endStation: e,
     steps: [

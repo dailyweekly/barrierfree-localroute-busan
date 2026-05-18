@@ -25,10 +25,10 @@ export default async function LocalPage({ searchParams }: { searchParams: { [k: 
 
   return (
     <div className="space-y-6">
-      <section className="bg-white rounded-2xl border border-slate-200 p-5">
-        <h2 className="text-xl font-bold text-brand">④ 로컬루트 확장</h2>
+      <section className="card p-5">
+        <h2 className="text-xl font-extrabold text-brand-700">④ 부산다운 반나절 코스</h2>
         <p className="text-sm text-slate-600 mt-1">
-          목적지 인근의 유니크베뉴(부산관광공사), 갈맷길(부산광역시), 택슐랭 식당(부산광역시)을 묶어 반나절 코스로 제안합니다.
+          목적지 도착 후 들를 만한 유니크베뉴(부산관광공사), 갈맷길 산책 구간(부산광역시), 택슐랭 식당(부산광역시)을 한 동선에 묶어 제안합니다.
         </p>
       </section>
 

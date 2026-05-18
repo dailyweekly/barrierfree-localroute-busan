@@ -22,7 +22,7 @@ export default function Footer() {
                 <a href={d.fileDataUrl} target="_blank" rel="noreferrer" className="hover:text-brand-700 underline-offset-2 hover:underline">
                   {d.name}
                 </a>
-                <span className="text-slate-400 ml-1">({d.id})</span>
+                <span className="text-slate-400 ml-1">· {d.provider}</span>
               </li>
             ))}
           </ul>
