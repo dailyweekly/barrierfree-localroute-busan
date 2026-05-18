@@ -34,8 +34,9 @@ export default function Footer() {
             <li><Link href="/routes" className="hover:text-brand-700">②③ 경로 비교 + AI 설명</Link></li>
             <li><Link href="/local" className="hover:text-brand-700">④ 로컬루트 확장</Link></li>
             <li><Link href="/admin" className="hover:text-brand-700">⑤ 관리자/심사 대시보드</Link></li>
+            <li><Link href="/scenarios" className="hover:text-brand-700">🧪 시나리오 20종 시연</Link></li>
             <li><Link href="/about" className="hover:text-brand-700">소개 (차별성·사업화·ESG)</Link></li>
-            <li><a href="/api/qr?text=https://barrierfree-localroute-busan.vercel.app" target="_blank" rel="noreferrer" className="hover:text-brand-700">시제품 QR 자리표시자</a></li>
+            <li><Link href="/privacy" className="hover:text-brand-700">개인정보 처리방침</Link></li>
           </ul>
         </div>
       </div>

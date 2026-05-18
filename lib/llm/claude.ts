@@ -14,19 +14,29 @@ import { recordGuardrail } from "./log";
 
 const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
 
-function deterministicFallback(candidate: RouteCandidate): { short: string; detail: string; voice: string } {
-  const { complexityGrade, predictedCongestion, alternativeType, passable } = candidate;
+function deterministicFallback(candidate: RouteCandidate, query?: UserQuery): { short: string; detail: string; voice: string } {
+  const { complexityGrade, predictedCongestion, alternativeType, passable, kind } = candidate;
+  const userLabel: Record<string, string> = {
+    wheelchair: "휠체어 이용자", elderly: "고령 이용자", pregnant: "임산부", infant: "유아동반 보호자", luggage: "캐리어 동반 관광객", general: "일반 이용자",
+  };
+  const u = query ? (userLabel[query.userType] ?? "이용자") : "이용자";
   if (!passable) {
     return {
-      short: "이 경로는 이동이 어렵습니다. 직원 안내를 권장합니다.",
-      detail: `${candidate.startStation}에서 ${candidate.endStation}까지의 경로는 현재 입력 자료상 이동 불가로 표시됩니다. 역 직원이나 보호자의 도움을 받으세요. 자세한 내용은 확인 필요.`,
-      voice: `이 경로는 이동이 어렵습니다. 역 직원의 도움을 받으세요.`,
+      short: "이 경로는 지금 이동이 어렵습니다.",
+      detail: `${candidate.startStation}에서 ${candidate.endStation}까지의 경로는 현재 자료상 이동 불가로 표시됩니다. 역 직원에게 도움을 요청하시거나, 다른 시간대로 이동하시는 것을 권장합니다.`,
+      voice: `이 경로는 지금 이동이 어렵습니다. 역 직원에게 도움을 요청하세요.`,
     };
   }
+  const kindLine: Record<string, string> = {
+    safe:           `${u}에게 안전 우선으로 추천하는 경로입니다.`,
+    low_congestion: `이 시간대에 덜 붐비는 경로를 골랐습니다.`,
+    include_local:  `목적지 인근의 부산다운 장소를 함께 둘러볼 수 있는 코스입니다.`,
+  };
+  const reason = kindLine[kind] ?? "이용자 조건에 맞춰 골라드린 경로입니다.";
   return {
-    short: `복잡도 ${complexityGrade}, 예상혼잡 ${predictedCongestion}. ${alternativeType} 안내.`,
-    detail: `${candidate.startStation}에서 ${candidate.endStation}까지 가는 길은 복잡도가 ${complexityGrade}이고, 이 시간대 예상혼잡은 ${predictedCongestion}입니다. 엘리베이터 ${alternativeType} 경로로 이동하면 됩니다.`,
-    voice: `이 경로는 복잡도가 ${complexityGrade}이고, 예상혼잡은 ${predictedCongestion}입니다. ${alternativeType}로 이동하세요.`,
+    short: `${reason} 복잡도 ${complexityGrade}, 예상혼잡 ${predictedCongestion}.`,
+    detail: `${reason} 이동 부담을 나타내는 복잡도는 "${complexityGrade}", 이 시간대 예상혼잡은 "${predictedCongestion}"입니다. 엘리베이터는 ${alternativeType} 안내를 따라가시면 됩니다. 데이터에 없는 시설은 "확인 필요"로 표시되며, 그 부분은 역 직원에게 다시 확인해 주세요.`,
+    voice: `${reason} 복잡도는 ${complexityGrade}, 예상혼잡은 ${predictedCongestion}입니다. 엘리베이터는 ${alternativeType}로 이동하세요.`,
   };
 }
 
@@ -37,7 +47,7 @@ export async function explainCandidate(
 ): Promise<LLMExplanation> {
   const ctx: GuardrailContext = { candidate, query, knownStations };
   const whitelisted = buildWhitelistedInput(ctx);
-  const fallback = deterministicFallback(candidate);
+  const fallback = deterministicFallback(candidate, query);
 
   const enabled = (process.env.LLM_ENABLED ?? "true") === "true";
   const key = process.env.ANTHROPIC_API_KEY;

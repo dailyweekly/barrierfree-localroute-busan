@@ -1,4 +1,5 @@
 import type { RouteCandidate, LLMExplanation } from "../lib/types";
+import CopyButton from "./CopyButton";
 
 const KIND_THEME: Record<string, { bg: string; ring: string; icon: string; label: string; accent: string }> = {
   safe:           { bg: "bg-card-safe",  ring: "ring-moss/30",  icon: "🛡️", label: "안전 우선",       accent: "text-moss-deep" },
@@ -6,11 +7,7 @@ const KIND_THEME: Record<string, { bg: string; ring: string; icon: string; label
   include_local:  { bg: "bg-card-local", ring: "ring-coral/30", icon: "🍜", label: "관광·맛집 코스",  accent: "text-coral-deep" },
 };
 
-const GRADE_CHIP: Record<string, string> = {
-  "낮음": "chip-ok",
-  "보통": "chip",
-  "높음": "chip-warn",
-};
+const GRADE_CHIP: Record<string, string> = { "낮음": "chip-ok", "보통": "chip", "높음": "chip-warn" };
 
 const BAR_CLASS = (lvl: "낮음" | "보통" | "높음") =>
   lvl === "낮음" ? "bar bar-low" : lvl === "보통" ? "bar bar-mid" : "bar bar-high";
@@ -26,11 +23,9 @@ export function RouteCard({ candidate, explanation }: { candidate: RouteCandidat
             <span aria-hidden>{t.icon}</span> {candidate.title}
           </h3>
         </div>
-        {candidate.passable ? (
-          <span className="chip chip-ok">✓ 이동 가능</span>
-        ) : (
-          <span className="chip chip-warn">⚠ 이동 불가</span>
-        )}
+        {candidate.passable
+          ? <span className="chip chip-ok">✓ 이동 가능</span>
+          : <span className="chip chip-warn">⚠ 이동 불가</span>}
       </header>
 
       <dl className="grid grid-cols-3 gap-3 mt-4 text-sm">
@@ -89,7 +84,10 @@ export function RouteCard({ candidate, explanation }: { candidate: RouteCandidat
               <span aria-hidden className="transition group-open:rotate-90">▶</span>
               음성 안내 문장 (TTS 평문)
             </summary>
-            <p className="text-xs text-slate-600 mt-1 bg-slate-50 rounded-lg p-2 border border-slate-100">{explanation.voice}</p>
+            <div className="mt-1 bg-slate-50 rounded-lg p-2 border border-slate-100">
+              <p className="text-xs text-slate-700">{explanation.voice}</p>
+              <div className="mt-2"><CopyButton text={explanation.voice} label="음성 문장 복사" /></div>
+            </div>
           </details>
 
           <details className="mt-2 group">
@@ -98,12 +96,12 @@ export function RouteCard({ candidate, explanation }: { candidate: RouteCandidat
               설명가능 AI — 근거 데이터 (XAI)
             </summary>
             <ul className="text-xs text-slate-700 mt-2 space-y-1 bg-slate-50 rounded-lg p-2 border border-slate-100">
-              <li>• 학습라벨: <span className="font-mono">{candidate.rationale.passability.sourceLabel}</span></li>
-              <li>• 복잡도 점수 {candidate.rationale.complexity.score} ({candidate.rationale.complexity.grade})</li>
-              <li>• 예상혼잡 출처: {candidate.rationale.congestion.sourceStation} / {candidate.rationale.congestion.sourceHour}시</li>
-              <li>• 대체경로유형: {candidate.rationale.alternativeType.type}</li>
+              <li>학습라벨: <span className="font-mono">{candidate.rationale.passability.sourceLabel}</span></li>
+              <li>복잡도 점수 {candidate.rationale.complexity.score} ({candidate.rationale.complexity.grade})</li>
+              <li>예상혼잡 출처: {candidate.rationale.congestion.sourceStation} / {candidate.rationale.congestion.sourceHour}시</li>
+              <li>대체경로유형: {candidate.rationale.alternativeType.type}</li>
               {candidate.rationale.alternativeType.sourceIds.length > 0 && (
-                <li>• 엘리베이터 고유번호: <span className="font-mono">{candidate.rationale.alternativeType.sourceIds.join(", ")}</span></li>
+                <li>엘리베이터 고유번호: <span className="font-mono">{candidate.rationale.alternativeType.sourceIds.join(", ")}</span></li>
               )}
             </ul>
           </details>

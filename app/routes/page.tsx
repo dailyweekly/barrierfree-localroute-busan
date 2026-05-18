@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { RouteCard } from "../../components/RouteCard";
+import RouteActions from "../../components/RouteActions";
 import type { LLMExplanation, RouteCandidate } from "../../lib/types";
 
 interface RecommendResponse {
@@ -67,7 +68,17 @@ export default async function RoutesPage({ searchParams }: { searchParams: { [k:
               {query.preferences.map((p) => <span key={p} className="chip">{PREF_LABEL[p] ?? p}</span>)}
             </div>
           </div>
-          <Link href="/" className="btn-ghost text-sm whitespace-nowrap">← 조건 다시 입력</Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <RouteActions
+              start={query.startStation}
+              end={query.endStation}
+              user={query.userType}
+              hour={query.travelHour}
+              dow={query.travelDow}
+              pref={query.preferences.join(",")}
+            />
+            <Link href="/" className="btn-ghost text-sm whitespace-nowrap">← 조건 다시 입력</Link>
+          </div>
         </div>
         {notes.length > 0 && (
           <ul className="mt-3 text-sm bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-1">

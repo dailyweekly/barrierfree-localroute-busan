@@ -4,11 +4,12 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const NAV = [
-  { href: "/",       label: "입력",       num: "①" },
-  { href: "/routes", label: "경로",       num: "②③" },
-  { href: "/local",  label: "로컬루트",   num: "④" },
-  { href: "/admin",  label: "대시보드",   num: "⑤" },
-  { href: "/about",  label: "소개",       num: "" },
+  { href: "/",          label: "입력",       num: "①" },
+  { href: "/routes",    label: "경로",       num: "②③" },
+  { href: "/local",     label: "로컬루트",   num: "④" },
+  { href: "/scenarios", label: "시나리오",   num: "🧪" },
+  { href: "/admin",     label: "대시보드",   num: "⑤" },
+  { href: "/about",     label: "소개",       num: "" },
 ];
 
 export default function AppHeader() {
@@ -72,6 +73,16 @@ export default function AppHeader() {
             <span aria-hidden>◑</span><span>고대비</span>
           </button>
           <button
+            onClick={async () => {
+              await fetch("/api/auth", { method: "DELETE", cache: "no-store" });
+              window.location.assign("/login");
+            }}
+            title="로그아웃 — 비밀번호 재입력 필요"
+            className="hidden sm:inline-flex items-center gap-1 px-3 py-2 rounded-xl text-sm border bg-white border-slate-300 hover:bg-slate-50"
+          >
+            <span aria-hidden>🔒</span><span>로그아웃</span>
+          </button>
+          <button
             onClick={() => setMobOpen((v) => !v)}
             aria-expanded={mobOpen}
             aria-label="메뉴 열기"
@@ -92,6 +103,13 @@ export default function AppHeader() {
             ))}
             <button onClick={() => setBig((v) => !v)} className={`px-3 py-2 rounded-xl text-sm border ${big ? "bg-brand text-white border-brand" : "bg-white border-slate-300"}`}>큰글씨</button>
             <button onClick={() => setContrast((v) => !v)} className={`px-3 py-2 rounded-xl text-sm border ${contrast ? "bg-black text-white border-black" : "bg-white border-slate-300"}`}>고대비</button>
+            <button
+              onClick={async () => {
+                await fetch("/api/auth", { method: "DELETE", cache: "no-store" });
+                window.location.assign("/login");
+              }}
+              className="px-3 py-2 rounded-xl text-sm border bg-white border-slate-300"
+            >🔒 로그아웃</button>
           </div>
         </div>
       )}

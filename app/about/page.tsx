@@ -2,6 +2,7 @@ import { COMPETITORS, ORIGINALITY_PILLARS } from "../../lib/business/competition
 import { ROADMAP } from "../../lib/business/roadmap.ts";
 import { MARKETS, REVENUE_MODELS, RISKS } from "../../lib/business/markets.ts";
 import { ESG_PILLARS, ESG_KPIS } from "../../lib/business/esg.ts";
+import { MARKET_STATS, ANCHOR_BUYERS } from "../../lib/business/market_size.ts";
 
 export const metadata = { title: "사업 소개 — 배리어프리 로컬루트 부산" };
 
@@ -46,6 +47,29 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="bg-white rounded-2xl border border-slate-200 p-5" aria-labelledby="market-size-h">
+        <h3 id="market-size-h" className="text-lg font-bold mb-3">시장 규모·정책 컨텍스트</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {MARKET_STATS.map((m) => (
+            <div key={m.area} className="border rounded-xl p-3 bg-slate-50">
+              <div className="text-xs font-bold text-brand-700">{m.area}</div>
+              <div className="font-bold mt-1 text-slate-800">{m.value}</div>
+              <div className="text-[11px] text-slate-500 mt-1">출처: {m.source}</div>
+              {m.note && <p className="text-[11px] text-slate-600 mt-1">{m.note}</p>}
+            </div>
+          ))}
+        </div>
+        <h4 className="font-semibold mt-5 mb-2 text-sm">1차 도입처 후보 (앵커 바이어)</h4>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          {ANCHOR_BUYERS.map((a) => (
+            <li key={a.org} className="border rounded-lg p-2">
+              <div className="font-bold text-brand-700">{a.org}</div>
+              <div className="text-slate-600 mt-0.5">{a.fit}</div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="bg-white rounded-2xl border border-slate-200 p-5" aria-labelledby="market-h">

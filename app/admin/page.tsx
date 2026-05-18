@@ -1,5 +1,7 @@
 import { headers } from "next/headers";
 import type { ScenarioResult, ModelMetrics } from "@/lib/types";
+import Donut from "@/components/Donut";
+import BarList from "@/components/BarList";
 
 interface MetricsResp {
   datasets: {
@@ -124,9 +126,34 @@ export default async function AdminPage() {
       )}
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <DistCard title="학습라벨 분포 (15151579)" dist={m.elevatorDist.learningLabel} />
-        <DistCard title="대체경로유형 분포" dist={m.elevatorDist.alternativeType} />
-        <DistCard title="복잡도 등급 분포" dist={m.elevatorDist.grade} />
+        <div className="card p-4">
+          <h4 className="font-semibold mb-3 text-sm">학습라벨 분포 (15151579)</h4>
+          <BarList data={Object.entries(m.elevatorDist.learningLabel).map(([label, value]) => ({ label, value }))} />
+        </div>
+        <div className="card p-4">
+          <h4 className="font-semibold mb-3 text-sm">대체경로유형 분포</h4>
+          <BarList data={Object.entries(m.elevatorDist.alternativeType).map(([label, value]) => ({ label, value }))} />
+        </div>
+        <div className="card p-4">
+          <h4 className="font-semibold mb-3 text-sm">복잡도 등급 분포</h4>
+          <BarList data={Object.entries(m.elevatorDist.grade).map(([label, value]) => ({ label, value }))} />
+        </div>
+      </section>
+
+      <section className="card p-5">
+        <h3 className="text-base font-bold mb-3">시나리오 20종 통과 한눈에</h3>
+        <div className="flex flex-wrap items-center gap-6">
+          <Donut value={s.summary.pass} total={s.summary.total} label="통과율" color={s.summary.passRate >= 0.95 ? "#16A34A" : s.summary.passRate >= 0.7 ? "#F59E0B" : "#DC2626"} />
+          <div className="flex-1 min-w-[240px]">
+            <BarList
+              max={s.summary.total}
+              data={[
+                { label: "✓ 통과",    value: s.summary.pass, color: "linear-gradient(90deg, #16A34A, #84CC16)" },
+                { label: "⚠ 실패",    value: s.summary.fail, color: "linear-gradient(90deg, #DC2626, #F97316)" },
+              ]}
+            />
+          </div>
+        </div>
       </section>
 
       <section className="bg-white rounded-2xl border border-slate-200 p-5">
