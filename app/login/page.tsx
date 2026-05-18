@@ -1,9 +1,8 @@
 "use client";
 import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 function LoginInner() {
-  const router = useRouter();
   const sp = useSearchParams();
   const next = sp?.get("next") || "/";
   const [pw, setPw] = useState("");
@@ -19,16 +18,18 @@ function LoginInner() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: pw }),
+        cache: "no-store",
       });
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
-        setErr(j.error || "인증 실패");
+        setErr(j.error || "비밀번호가 올바르지 않습니다.");
         setLoading(false);
         return;
       }
-      router.replace(next);
+      // 쿠키가 응답으로 함께 설정됨 → 완전한 페이지 이동으로 쿠키 적용 보장
+      window.location.assign(next);
     } catch (e) {
-      setErr((e as Error).message);
+      setErr((e as Error).message || "요청에 실패했습니다.");
       setLoading(false);
     }
   };
