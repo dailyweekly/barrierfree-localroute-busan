@@ -148,7 +148,6 @@ export default function InputForm() {
         <button onClick={submit} disabled={loading} className="btn-primary text-base disabled:opacity-60 disabled:cursor-not-allowed">
           {loading ? "🤖 추천 계산 중…" : "🤖 AI 경로 추천 받기"}
         </button>
-        <p className="text-xs text-slate-500">LLM은 경로를 결정하지 않습니다. 추천은 공공데이터 학습라벨 기반 규칙·경량 분류기가 담당합니다.</p>
       </div>
     </section>
   );

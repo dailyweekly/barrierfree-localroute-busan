@@ -52,12 +52,13 @@ export default function Home() {
       {/* 입력 폼 */}
       <InputForm />
 
-      {/* 핵심 원칙 3개 */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {/* 서비스가 제공하는 3가지 */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-3" aria-labelledby="features-h">
+        <h2 id="features-h" className="sr-only">서비스가 제공하는 3가지</h2>
         {[
-          { title: "LLM은 결정하지 않습니다", body: "경로 결정은 공공데이터 학습라벨 기반 규칙 + 경량 분류기. LLM은 결과를 쉬운 말로 설명만 합니다.", icon: "🤖" },
-          { title: "정기 갱신형 — 정직한 표현", body: "실시간 고장 감지·실시간 혼잡 예측은 제공하지 않습니다. 모든 표현은 자동 점검됩니다.", icon: "📅" },
-          { title: "검증 가능한 AI", body: "K-fold 교차검증으로 F1·MAE·Spearman·Top-1을 실측. 환각 검출률은 ring-buffer로 누적 기록.", icon: "🔬" },
+          { title: "안전 우선 경로", body: "엘리베이터 이용불가 상황을 가정해도 이동 가능한 경로를 우선 제안합니다.", icon: "🛡️" },
+          { title: "혼잡 회피 경로", body: "시간대별 승하차인원 데이터로 덜 붐비는 동선을 골라드립니다.", icon: "🌊" },
+          { title: "로컬 포함 경로", body: "유니크베뉴·갈맷길·택슐랭 식당을 묶어 부산다운 반나절 코스를 제안합니다.", icon: "🍜" },
         ].map((p) => (
           <article key={p.title} className="card p-5">
             <div className="text-3xl" aria-hidden>{p.icon}</div>
